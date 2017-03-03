@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Puzzle Animator JS</title>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    <script src="puzzle-animator.min.js"></script>
+    <script>
+        puzzleAnimator.init({
+            img: '1.jpg',
+            canvasId: 'canvas',
+            difficulty: 3,
+            originalImageFrame: 5,
+            maxFrames: 9,
+            speed: 150
+        });
+
+        document.addEventListener('click', function(){
+            puzzleAnimator.toggle();
+        })
+    </script>
+</body>
+</html>
