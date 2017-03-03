@@ -1,6 +1,6 @@
 # Puzzle Animator
 
-With this lib, you can create animations like "GIF Puzzles", using one image and de canvas. The objective is create a simple puzzle animation, but avoiding the big size of GIF images. 
+With this lib, you can create animations like "GIF Puzzles", using one image and de canvas. The objective is create a simple puzzle animation, but avoiding the big size of GIF images. Based on this incridible game tutorial: [HTML5 Puzzle Game](https://code.tutsplus.com/tutorials/create-an-html5-canvas-tile-swapping-puzzle--active-10747)
 
 ## Using
 
