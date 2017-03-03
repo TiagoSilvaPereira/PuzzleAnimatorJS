@@ -38,7 +38,7 @@ With this lib, you can create animations like "GIF Puzzles", using one image and
     img: '1.jpg', // Image file path
     canvasId: 'canvas', // Id of the canvas element
     difficulty: 3, // Defines the quantity of pieces in the puzzle (vertically and horizontally)
-    currentFrame: 0 // Optional - The initial frame of the animation. Default: 1
+    currentFrame: 2 // Optional - The initial frame of the animation. Default: 1
     originalImageFrame: 5, // Optional - The frame that reproduces the original image. Default: 1
     paused: false, // Optional - Defines if the animation is initally paused
     maxFrames: 9, // Max frames of the animation
