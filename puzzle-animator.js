@@ -11,12 +11,16 @@ var puzzleAnimator = {
     puzzleHeight: 0,
 
     // Animation Control
+    interval: null,
     currentFrame: 0,
     maxFrames: 0,
     originalImageFrame: 0,
     paused: false,
 
     init: function(options) {
+
+        this.clearAnimationData();
+
         this.options = options;
         this.options.speed = options.speed || 100;
 
@@ -25,13 +29,31 @@ var puzzleAnimator = {
         this.originalImageFrame = (options.originalImageFrame) || 1;
         this.paused = options.paused || false;
 
-        this.makeImage();
+        this.loadImage();
+
     },
 
-    makeImage: function() {
+    clearAnimationData: function() {
+
+        if(this.interval) clearInterval(this.interval);
+        if(this.pieces) this.pieces = [];
+        if(this.originalPieces) this.originalPieces = [];
+
+        this.pieceWidth = 0;
+        this.pieceHeight =  0;
+        this.puzzleWidth = 0;
+        this.puzzleHeight = 0;
+
+    },
+
+    loadImage: function(image_path) {
+
+        if(this.img) this.img.remove();
+
         this.img = new Image();
         this.img.addEventListener('load',this.imageLoaded.bind(this),false);
-        this.img.src = this.options.img;
+        this.img.src = this.options.img || image_path;
+
     },
 
     imageLoaded: function() {
@@ -39,15 +61,20 @@ var puzzleAnimator = {
         this.pieceHeight = Math.floor(this.img.height / this.options.difficulty)
         this.puzzleWidth = this.pieceWidth * this.options.difficulty;
         this.puzzleHeight = this.pieceHeight * this.options.difficulty;
+
         this.makeCanvas();
         this.initPuzzle();
     },
 
     makeCanvas: function() {
-        this.canvas = document.getElementById(this.options.canvasId);
-        this.canvasContext = this.canvas.getContext('2d');
+
+        if(!this.canvas) this.canvas = document.getElementById(this.options.canvasId);
+        if(!this.canvasContext) this.canvasContext = this.canvas.getContext('2d');
+
+        this.clearContext();
         this.canvas.width = this.puzzleWidth;
         this.canvas.height = this.puzzleHeight;
+        
     },
 
     initPuzzle: function() {
@@ -88,15 +115,16 @@ var puzzleAnimator = {
             xPos = 0,
             yPos = 0;
 
-        this.canvasContext.clearRect(0,0,this.puzzleWidth,this.puzzleHeight);
+        this.clearContext();
 
         for(i = 0;i < pieces.length; i++){
             piece = pieces[i];
             piece.xPos = xPos;
             piece.yPos = yPos;
 
-             this.canvasContext.drawImage(this.img, piece.sx, piece.sy, this.pieceWidth, this.pieceHeight, 
+            this.canvasContext.drawImage(this.img, piece.sx, piece.sy, this.pieceWidth, this.pieceHeight, 
                                           xPos, yPos, this.pieceWidth, this.pieceHeight);
+            this.canvasContext.strokeRect(xPos, yPos, this.pieceWidth, this.pieceHeight);
 
             xPos += this.pieceWidth;
             if(xPos >= this.puzzleWidth){
@@ -106,10 +134,14 @@ var puzzleAnimator = {
         }
     },
 
+    clearContext: function() {
+        this.canvasContext.clearRect(0,0,this.puzzleWidth,this.puzzleHeight);
+    },
+
     setupAnimation: function() {
-        setInterval(function(){
-        
+        this.interval = setInterval(function(){
             if(!this.paused) {
+
                 this.currentFrame = (this.currentFrame < this.maxFrames) ? this.currentFrame + 1 : 1;
 
                 if(this.currentFrame != this.originalImageFrame){
@@ -150,8 +182,14 @@ var puzzleAnimator = {
     },
 
     toggle: function() {
-        console.log(this.getCurrentFrame());
         this.paused = !this.paused;
+    },
+
+    destroy: function() {
+        if(this.interval) {
+            console.log('Destroy interval');
+            clearInterval(this.interval);
+        };
     }
 
 };
